@@ -96,29 +96,29 @@ Please go open `logs/debug.log`, if the application started succesifully you sho
 ```
 
 
-Keep an eye on this logs/debug.log file during development.
+Keep an eye on this logs/debug.log file during development.  
 
 The application structure is similar to \*NIX systems. These services started by the files in src/init folder. 
-Each file is a service and initilazing before we open the HTTP Server.
+Each file is a service and initilazing before we open the HTTP Server.  
 
-Please visit [http://localhost:8080/](http://localhost:8080/) to see if your API up and running.
+Please visit [http://localhost:8080/](http://localhost:8080/) to see if your API up and running.  
 
 
 ## Unit Tests
-We have 2 type of tests, integration and unit tests.
-Execute the command below to proceed unit tests:
+We have 2 type of tests, integration and unit tests.  
+Execute the command below to proceed unit tests:  
 ```
 $ docker-compose run booking_manager npm test -- --group=unit
 ```
 
 ## Integration Tests
 
-The command below executes integration tests.
+The command below executes integration tests.  
 ```
 $ docker-compose run booking_manager npm test -- --group=integration
 ```
 
-#### Example Output:
+#### Example Output:  
 ```
 $ docker-compose run booking_manager npm test -- --group=integration
 Creating mexn_booking_manager_run ... done
@@ -173,7 +173,7 @@ npm notice
 
 ## Endpoints
 
-We have standard responses for any kind of request:
+We have standard responses for any kind of request:  
 #### OK Response:
 ```
 {
@@ -186,7 +186,7 @@ We have standard responses for any kind of request:
   "errors":[{},{}...]
 }
 ```
-In integration tests, we are checking the data property and errors array.
+In integration tests, we are checking the data property and errors array.  
 
 ### Restaurant:
 GET [http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4](http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4)
@@ -195,11 +195,11 @@ GET [http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4](http://local
 ### Settings:
 To change working hours PUT to [http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/settings/working-hours](http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/settings/working-hours)
 
-Use the curl command below to set the working hours of the restaurant.
-`hour` is the opening hour
-`day` [0-6], is the weekday, 1 monday, 2 tuesday, ..., 0 sunday
-`duration` Restaurant open time in minutes
-`open` in case of false, we ignore other parameters and set the restaurant is off for that day of the week.
+Use the curl command below to set the working hours of the restaurant.  
+`hour` is the opening hour  
+`day` [0-6], is the weekday, 1 monday, 2 tuesday, ..., 0 sunday  
+`duration` Restaurant open time in minutes  
+`open` in case of false, we ignore other parameters and set the restaurant is off for that day of the week.  
 
 #### Request:
 ```
@@ -219,10 +219,10 @@ curl -H 'Content-Type: application/json' -X PUT -d '
 To add a new table POST to [http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/settings/tables](http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/settings/tables)
 
 #### Request:
-`name` is the table name, should be unique across the restaurant
-`smoking` bool, is smoking allowed?
-`outdoor` bool, is it a roof top or garden?
-`floor`  int
+`name` is the table name, should be unique across the restaurant  
+`smoking` bool, is smoking allowed?  
+`outdoor` bool, is it a roof top or garden?  
+`floor`  int  
 
 ```
 curl -H 'Content-Type: application/json' -X POST -d '
@@ -255,10 +255,10 @@ curl -H 'Content-Type: application/json' -X POST -d '
 To create a new reservation POST to [http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/reservation](http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/reservation)
 
 #### Request:
-`name` string, a customer name,
-`phone` string, customer contact number,
-`time` string, the reservation time ISO date format (UTC timezone)
-`tableId` string
+`name` string, a customer name,  
+`phone` string, customer contact number,  
+`time` string, the reservation time ISO date format (UTC timezone)  
+`tableId` string  
 
 ```
 curl -H 'Content-Type: application/json' -X POST -d '
