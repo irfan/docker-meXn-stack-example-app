@@ -3,6 +3,9 @@
 ## Description
 This repository contains an API source code that build with NodeJS, ExpressJS, MongoDB, including integration and unit tests. The application running on Docker containers and ready to deploy any cloud provider.
 
+## Test Results
+<img width="432" alt="Screen Shot 2022-01-17 at 16 45 18" src="https://user-images.githubusercontent.com/196202/149780039-e41312c3-587c-4f45-83de-21e5c891cc42.png">
+
 ### Directory Structure:
 
 I'm going to tell a bit more about how the project structured. Please see the directory structure below:
@@ -80,6 +83,7 @@ Wait until you see something like:
 Creating mongodb ... done
 Creating mexn_booking_manager_1 ... done
 ```
+
 Please go open `logs/debug.log`, if the application started succesifully you should see something like:
 ```
 [2022-01-17T11:59:23.216] [INFO] default - Initializing services...
