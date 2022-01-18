@@ -12,7 +12,7 @@ This repository contains an API source code that build with NodeJS, ExpressJS, M
 ### Directory Structure:
 
 I'm going to tell a bit more about how the project structured. Please see the directory structure below:
-```
+```bash
 .
 ├── Dockerfile
 ├── README.md
@@ -73,20 +73,20 @@ Please see src/index.js to see how we initialize our application.
 ## Start the application
 First step is to install Docker to your computer.
 Clone the repository and open your terminal. Go to the root folder and execute
-```
+```bash
 $ cp dotenv-example .env
 $ npm install
 $ docker-compose up -d --build
 ```
 Edit the .env file, wait for npm dependencies to install and then build the docker images.
 Wait until you see something like:
-```
+```bash
 Creating mongodb ... done
 Creating mexn_booking_manager_1 ... done
 ```
 
 Please go open `logs/debug.log`, if the application started succesifully you should see something like:
-```
+```bash
 [2022-01-17T11:59:23.216] [INFO] default - Initializing services...
 [2022-01-17T11:59:23.257] [INFO] default - √ Log4JS configured
 [2022-01-17T11:59:23.257] [INFO] default - √ API ready
@@ -108,19 +108,19 @@ Please visit [http://localhost:8080/](http://localhost:8080/) to see if your API
 ## Unit Tests
 We have 2 type of tests, integration and unit tests.  
 Execute the command below to proceed unit tests:  
-```
+```bash
 $ docker-compose run booking_manager npm test -- --group=unit
 ```
 
 ## Integration Tests
 
 The command below executes integration tests.  
-```
+```bash
 $ docker-compose run booking_manager npm test -- --group=integration
 ```
 
 #### Example Output:  
-```
+```bash
 $ docker-compose run booking_manager npm test -- --group=integration
 Creating mexn_booking_manager_run ... done
 
@@ -176,13 +176,13 @@ npm notice
 
 We have standard responses for any kind of request:  
 #### OK Response:
-```
+```json
 {
   "data": {...}
 }
 ```
 ### Error Case:
-```
+```json
 {
   "errors":[{},{}...]
 }
@@ -203,7 +203,7 @@ Use the curl command below to set the working hours of the restaurant.
 `open` in case of false, we ignore other parameters and set the restaurant is off for that day of the week.  
 
 #### Request:
-```
+```bash
 curl -H 'Content-Type: application/json' -X PUT -d '
 [
   { "hour":9, "day":1, "duration":720, "open":true },
@@ -225,7 +225,7 @@ To add a new table POST to [http://localhost:8080/api/restaurant/61d4b04efafc4eb
 `outdoor` bool, is it a roof top or garden?  
 `floor`  int  
 
-```
+```bash
 curl -H 'Content-Type: application/json' -X POST -d '
 {
    "name": "87",
@@ -239,8 +239,9 @@ curl -H 'Content-Type: application/json' -X POST -d '
 To update a table PUT request to [http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/settings/tables](http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/settings/tables)
 
 #### Request:
-`_id` string
-```
+`_id` string  
+
+```bash
 curl -H 'Content-Type: application/json' -X POST -d '
 {
    "_id": "61dfb791e0205efb80f083ee",
@@ -261,7 +262,7 @@ To create a new reservation POST to [http://localhost:8080/api/restaurant/61d4b0
 `time` string, the reservation time ISO date format (UTC timezone)  
 `tableId` string  
 
-```
+```bash
 curl -H 'Content-Type: application/json' -X POST -d '
 {
    "name": "John Doe",
@@ -274,9 +275,9 @@ curl -H 'Content-Type: application/json' -X POST -d '
 #### Request: 
 To update a reservation PUT request to [http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/reservation](http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/reservation)
 
-`_id`, string, the id of the reservation to apply changes
+`_id`, string, the id of the reservation to apply changes  
 
-```
+```bash
 curl -H 'Content-Type: application/json' -X POST -d '
 {
    "_id":"61d4b8308c8fa65750c50f66",
