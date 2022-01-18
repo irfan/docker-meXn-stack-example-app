@@ -2,3 +2,5 @@ node_modules/*
 db/*
 !db/mongodb/.gitkeep
 .env
+logs/*
+*.swp

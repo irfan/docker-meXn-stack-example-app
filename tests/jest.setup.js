@@ -6,7 +6,6 @@ beforeAll(done => {
   done();
 });
 
-afterAll(done => {
-  mongoose.connection.close();
-  done();
+afterAll(async () => {
+  const closed = await mongoose.connection.close();
 });
