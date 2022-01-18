@@ -3,7 +3,10 @@
 ## Description
 This repository contains an API source code that build with NodeJS, ExpressJS, MongoDB, including integration and unit tests. The application running on Docker containers and ready to deploy any cloud provider.
 
-## Test Results
+## Unit test Results:
+<img width="431" alt="Screen Shot 2022-01-18 at 22 55 46" src="https://user-images.githubusercontent.com/196202/150009137-5832880b-6481-4e8e-9f1b-128e322a8e1d.png">
+
+## Integration Test Results:
 <img width="432" alt="Screen Shot 2022-01-17 at 16 45 18" src="https://user-images.githubusercontent.com/196202/149780039-e41312c3-587c-4f45-83de-21e5c891cc42.png">
 
 ### Directory Structure:
@@ -47,6 +50,7 @@ I'm going to tell a bit more about how the project structured. Please see the di
 │   │   ├── restaurant.js
 │   │   └── settings.js
 │   └── services
+│       ├── restaurant.test.js
 │       └── restaurant.js
 └── tests
     ├── index.js
@@ -54,10 +58,7 @@ I'm going to tell a bit more about how the project structured. Please see the di
     │   ├── reservation.test.js
     │   ├── restaurant.test.js
     │   └── settings.test.js
-    ├── jest.setup.js
-    └── unit
-        └── services
-            └── reservation.test.js
+    └── jest.setup.js
 ```
 As we see there are mandatory files like Dockerfile, package.json, docker-compose.yml etc.. 
 - `db/mongodb` folder is the folder that is going to be mounted to the MongoDB docker container.
