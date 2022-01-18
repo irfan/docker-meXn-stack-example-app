@@ -11,11 +11,11 @@
   },
   "jest": {
     "runner": "groups",
-    "rootDir": "./tests/",
+    "rootDir": "./",
     "verbose": true,
     "coverageDirectory": "tests/coverage",
     "setupFilesAfterEnv": [
-      "<rootDir>/jest.setup.js"
+      "<rootDir>/tests/jest.setup.js"
     ],
     "coveragePathIgnorePatterns": [
       "node_modules",
@@ -25,7 +25,8 @@
     ],
     "transform": {},
     "testMatch": [
-      "**/*test.js"
+      "**/*test.js",
+      "**/**test.js"
     ],
     "testPathIgnorePatterns": [
       "/node_modules/"
@@ -41,9 +42,9 @@
     "mongoose": "^6.1.6"
   },
   "devDependencies": {
+    "date-fns": "^2.28.0",
     "jest": "^27.4.7",
     "jest-runner-groups": "^2.1.0",
-    "date-fns": "^2.28.0",
     "supertest": "^6.1.6"
   }
 }
