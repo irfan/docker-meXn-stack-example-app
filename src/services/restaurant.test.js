@@ -56,6 +56,7 @@ describe('Restaurant Service', () => {
       name: "my-table",
       smooking: false,
       outdoor: false,
+      seat: 2,
       floor: 1
     };
 

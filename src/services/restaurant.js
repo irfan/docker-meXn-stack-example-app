@@ -92,13 +92,28 @@ class RestaurantService {
     const checkWorkingHours = this._isReservationInWorkingHours();
     const checkIsValidDate = this._isValidReservationDate();
     const checkTableEnable = this._isTableEnableForReservation();
+    const checkCapacity = this._checkCapacity();
 
     return Promise.all([
       checkWorkingHours,
       checkIsValidDate,
       checkIsTableFree,
-      checkTableEnable
+      checkTableEnable,
+      checkCapacity
     ]);
+  }
+
+  async _checkCapacity() {
+    const table = this.restaurant.tables.find((table => table.id.valueOf() === this.reservation.tableId.valueOf()));
+    if (this.reservation.people <= table.seat) {
+      return true;
+    }
+
+    throw new APIError('The seat capacity of this table is not enough for this reservation!', {
+      table: table._id,
+      capacity: table.seat,
+      requiredCapacity: this.reservation.people
+    });
   }
 
   async _isTableEnableForReservation() {

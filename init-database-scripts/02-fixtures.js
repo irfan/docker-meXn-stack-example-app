@@ -25,6 +25,7 @@ db.restaurants.insertOne({
     name:"1",
     smoking:false,
     outdoor:false,
+    seat: NumberInt(8),
     floor: NumberInt(2),
     updatedAt: ISODate("2022-01-17T02:35:24.327Z"),
     createdAt: ISODate("2022-01-17T02:35:24.327Z")
@@ -34,6 +35,7 @@ db.restaurants.insertOne({
     name:"2",
     smoking:false,
     outdoor:true,
+    seat: NumberInt(6),
     floor: NumberInt(1),
     updatedAt: ISODate("2022-01-17T02:35:24.327Z"),
     createdAt: ISODate("2022-01-17T02:35:24.327Z")
@@ -43,6 +45,7 @@ db.restaurants.insertOne({
     name:"3",
     smoking:true,
     outdoor:true,
+    seat: NumberInt(4),
     floor: NumberInt(1),
     updatedAt: ISODate("2022-01-17T02:35:24.327Z"),
     createdAt: ISODate("2022-01-17T02:35:24.327Z")
@@ -57,6 +60,7 @@ db.reservations.insertOne({
   tableId: ObjectId("61dfb791e0205efb80f083ee"),
   name: "Irfan Durmus",
   phone: "5327646161",
+  people: NumberInt(4),
   time: "2022-01-14T14:00:00.000Z",
   updatedAt: ISODate("2022-01-17T02:35:24.327Z"),
   createdAt: ISODate("2022-01-17T02:35:24.327Z")

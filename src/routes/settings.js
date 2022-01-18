@@ -53,8 +53,9 @@ export default (appRouter) => {
 
   router.post('/tables',
     paramMongoId('restaurantId'),
-    allowOnly(['name', 'smoking', 'outdoor', 'floor']),
+    allowOnly(['name', 'smoking', 'outdoor', 'floor', 'seat']),
     [
+      check('seat').isInt(),
       check('name').isString(),
       check('smoking').isBoolean(),
       check('outdoor').isBoolean(),
@@ -86,8 +87,9 @@ export default (appRouter) => {
   router.put('/tables',
     paramMongoId('restaurantId'),
     bodyMongoId('_id'),
-    allowOnly(['_id', 'name', 'smoking', 'outdoor', 'floor']),
+    allowOnly(['_id', 'name', 'smoking', 'outdoor', 'floor', 'seat']),
     [
+      check('seat').isInt(),
       check('name').isString(),
       check('smoking').isBoolean(),
       check('outdoor').isBoolean(),

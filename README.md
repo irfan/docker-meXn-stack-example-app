@@ -73,6 +73,7 @@ Please see src/index.js to see how we initialize our application.
 ## Start the application
 First step is to install Docker to your computer.
 Clone the repository and open your terminal. Go to the root folder and execute
+
 ```bash
 $ cp dotenv-example .env
 $ npm install
@@ -97,13 +98,22 @@ Please go open `logs/debug.log`, if the application started succesifully you sho
 ```
 
 
-Keep an eye on this logs/debug.log file during development.  
+Keep an eye on this logs/debug.log file during development and test executions.
 
-The application structure is similar to \*NIX systems. These services started by the files in src/init folder. 
+The application structure is similar to \*NIX systems. The services above started by the files under src/init folder. 
 Each file is a service and initilazing before we open the HTTP Server.  
 
 Please visit [http://localhost:8080/](http://localhost:8080/) to see if your API up and running.  
 
+## Restart the application
+We are using external docker volume to share the database with multiple containers.
+If you made database related changes you will need to remove the files db/mongodb/ folder.
+
+To stop all the containers, remove database and log files you can execute the command below:
+```bash
+docker-compose down && rm -rf ./db/mongodb/* && rm logs/*
+```
+Now if you start containers with `docker-compose up -d --build` command to see database related changes.
 
 ## Unit Tests
 We have 2 type of tests, integration and unit tests.  
@@ -181,10 +191,20 @@ We have standard responses for any kind of request:
   "data": {...}
 }
 ```
-### Error Case:
+### Example Error Case:
 ```json
 {
-  "errors":[{},{}...]
+  "errors": [
+    {
+      "name": "APIError",
+      "msg": "The seat capacity of this table is not enough for this reservation!",
+      "details": {
+          "table": "61dfb791e0205efb80f083ee",
+          "capacity": 8,
+          "requiredCapacity": 12
+      }
+    }
+  ]
 }
 ```
 In integration tests, we are checking the data property and errors array.  
@@ -231,6 +251,7 @@ curl -H 'Content-Type: application/json' -X POST -d '
    "name": "87",
    "smoking": false,
    "outdoor": true,
+   "seat": 2,
    "floor": 2
 }' http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/settings/tables
 ```
@@ -242,12 +263,13 @@ To update a table PUT request to [http://localhost:8080/api/restaurant/61d4b04ef
 `_id` string  
 
 ```bash
-curl -H 'Content-Type: application/json' -X POST -d '
+curl -H 'Content-Type: application/json' -X PUT -d '
 {
    "_id": "61dfb791e0205efb80f083ee",
    "name": "88",
    "smoking": false,
    "outdoor": true,
+   "seat": 4,
    "floor": 2
 }' http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/settings/tables
 ```
@@ -268,6 +290,7 @@ curl -H 'Content-Type: application/json' -X POST -d '
    "name": "John Doe",
    "phone": "8764321819",
    "time":"2022-05-18T13:00:00.000Z",
+   "people": 3,
    "tableId": "61dfb791e0205efb80f083ee"
 }' http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/reservation
 ```
@@ -278,12 +301,13 @@ To update a reservation PUT request to [http://localhost:8080/api/restaurant/61d
 `_id`, string, the id of the reservation to apply changes  
 
 ```bash
-curl -H 'Content-Type: application/json' -X POST -d '
+curl -H 'Content-Type: application/json' -X PUT -d '
 {
    "_id":"61d4b8308c8fa65750c50f66",
    "name": "John Doe",
    "phone": "8764321819",
-   "time":"2022-05-18T13:00:00.000Z",
+   "time":"2022-06-18T13:00:00.000Z",
+   "people": 5,
    "tableId": "61dfb791e0205efb80f083ee"
 }' http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/reservation
 ```

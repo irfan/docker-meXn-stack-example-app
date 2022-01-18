@@ -37,6 +37,11 @@ const Tables = new mongoose.Schema({
   outdoor: {
     type: Boolean
   },
+  seat: {
+    type: Number,
+    required: false,
+    default: 1
+  },
   floor: {
     type: Number,
     required: false,

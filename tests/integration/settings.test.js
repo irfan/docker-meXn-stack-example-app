@@ -75,6 +75,7 @@ describe('Restaurant Settings', () => {
       name: 'dummy-table-name-' + randomStr(),
       smoking: false,
       outdoor: true,
+      seat: 12,
       floor: 1
     };
 

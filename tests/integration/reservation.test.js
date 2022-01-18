@@ -13,12 +13,17 @@ import { nextSunday, nextWednesday, nextTuesday, nextFriday } from 'date-fns';
 
 describe('Reservation Endpoint', () => {
 
+  beforeEach(() => {
+    expect.hasAssertions();
+  });
+
   // test creating reservation
   describe('Create Reservation', () => {
     const data = {
       tableId: "61dfb791e0205efb80f083ee",
       name: "Irfan Durmus",
       phone: "5327646161",
+      people: 2,
       time: nextWednesday(new Date().setUTCHours(13)).toISOString()
     }
 
@@ -38,6 +43,21 @@ describe('Reservation Endpoint', () => {
           } catch (e) {
             throw new Error('Unable to delete the created reservation');
           }
+          done();
+        });
+    });
+
+    test('Should NOT create a new reservation if table capacity isnt enough', done => {
+      const invalidData = Object.assign({}, data);
+      invalidData.people = 12;
+
+      request(API).post('/api/restaurant/61d4b04efafc4eb99190c7c4/reservation')
+        .set('Accept', 'application/json')
+        .send(invalidData)
+        .end((err, res) => {
+          expect(res.status).toBe(422);
+          expect(res.body.errors).toBeDefined();
+          expect(res.body.data).toBeUndefined();
           done();
         });
     });
@@ -134,6 +154,7 @@ describe('Reservation Endpoint', () => {
       tableId: "61dfb791e0205efb80f083ee",
       name: "edited reservation name",
       phone: "6927646161",
+      people: 2,
       time: nextTuesday(new Date().setUTCHours(13))
     };
 

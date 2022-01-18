@@ -22,6 +22,10 @@ const Reservation = new mongoose.Schema({
   tableId: {
     type: ObjectId,
     required: [true, 'Table is required']
+  },
+  people: {
+    type: Number,
+    required: [true, 'People is required!']
   }
 },
 {

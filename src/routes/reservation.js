@@ -21,7 +21,7 @@ export default (appRouter) => {
   appRouter.use('/restaurant/:restaurantId/reservation', router);
 
   router.post('/',
-    allowOnly(['time', 'name', 'phone', 'tableId']),
+    allowOnly(['time', 'name', 'phone', 'tableId', 'people']),
     paramMongoId('restaurantId'),
     reservationTime('time'),
     bodyMongoId('tableId'),
@@ -56,7 +56,7 @@ export default (appRouter) => {
     });
 
   router.put('/',
-    allowOnly(['_id', 'time', 'name', 'phone', 'tableId']),
+    allowOnly(['_id', 'time', 'name', 'phone', 'tableId', 'people']),
     paramMongoId('restaurantId'),
     reservationTime('time'),
     bodyMongoId('_id'),

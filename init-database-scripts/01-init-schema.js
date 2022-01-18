@@ -91,7 +91,7 @@ db.createCollection("restaurants", {
           bsonType: "array",
           items: {
             bsonType: "object",
-            required: ["name", "smoking", "outdoor", "floor"],
+            required: ["name", "smoking", "outdoor", "floor", "seat"],
             properties: {
               _id: {
                 bsonType: "objectId"
@@ -104,6 +104,11 @@ db.createCollection("restaurants", {
               },
               outdoor: {
                 bsonType: "bool"
+              },
+              seat: {
+                bsonType: "int",
+                minimum: 1,
+                maximum: 100
               },
               floor: {
                 bsonType: "int"
@@ -131,6 +136,11 @@ db.createCollection("reservations", {
         phone: {
           bsonType: "string",
           pattern: "^[0-9]{7,14}$"
+        },
+        people: {
+          bsonType: "int",
+          minimum: 1,
+          maximum: 100
         },
         restaurantId: {
           bsonType: "objectId",
