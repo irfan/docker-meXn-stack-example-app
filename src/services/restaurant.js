@@ -1,92 +1,128 @@
 import Restaurant from '../models/restaurant.js';
 import Reservation from '../models/reservation.js';
-import { APIError } from '../lib/APIError.js';
-import log4js from 'log4js';
+import {APIError} from '../lib/APIError.js';
 
-const logger = log4js.getLogger();
-
+/**
+ * Restaurat service
+ */
 class RestaurantService {
-
+  /**
+   * @param {Restaurant|null} restaurant
+   */
   constructor(restaurant = null) {
     this.reservation = null;
     this.restaurant = restaurant;
   }
 
+  /**
+   * @param {String|ObjctId} _id
+   * @return {Promise}
+   */
   deleteReservation(_id) {
-    return Reservation.deleteOne({ _id }).then(response => {
+    return Reservation.deleteOne({_id}).then((response) => {
       return response;
     });
   }
 
+  /**
+   * @param {Reservation} reservation
+   * @return {Promise}
+   */
   createReservation(reservation) {
     this.reservation = reservation;
-    return this.checkReservationValidity().then(response => {
+    return this.checkReservationValidity().then((response) => {
       return reservation.save();
     });
   }
 
+  /**
+   * @param {Reservation} reservation
+   * @return {Promise}
+   */
   updateReservation(reservation) {
     this.reservation = reservation;
-    return this.checkReservationValidity().then(response => {
-      const query = { _id: this.reservation._id };
+    return this.checkReservationValidity().then((response) => {
+      const query = {_id: this.reservation._id};
       return Reservation.findOneAndUpdate(query, reservation, {
         returnDocument: 'after',
-        upsert: false
+        upsert: false,
       });
     });
   }
 
+  /**
+   * @param {String|ObjctId} restaurantId
+   * @param {Array} data weekly working hours data
+   * @return {Promise}
+   */
   async updateWorkingHours(restaurantId, data) {
-    return Restaurant.findOneAndUpdate({ _id: restaurantId }, {
-      workingHours: data
+    return Restaurant.findOneAndUpdate({_id: restaurantId}, {
+      workingHours: data,
     },
     {
       returnDocument: 'after',
-      upsert: false
+      upsert: false,
     });
   }
 
+  /**
+   * @param {String|ObjctId} restaurantId
+   * @param {Object} table a restaurant table data
+   * @return {Promise}
+   */
   async addTable(restaurantId, table) {
     return Restaurant.findOneAndUpdate({
-      _id: restaurantId,
-      'tables.name': { $ne: table.name }
+      '_id': restaurantId,
+      'tables.name': {$ne: table.name},
     },
     {
-      $push: { tables: table }
+      $push: {tables: table},
     },
     {
       upsert: false,
-      returnDocument: 'after'
+      returnDocument: 'after',
     }).lean();
   }
 
+  /**
+   * @param {Object} table
+   * @return {Promise}
+   */
   async deleteTable(table) {
-    return Restaurant.updateOne({ _id: table.restaurantId }, {
+    return Restaurant.updateOne({_id: table.restaurantId}, {
       $pull: {
         tables: {
-          _id : table._id
-        }
-      }
+          _id: table._id,
+        },
+      },
     });
   }
 
+  /**
+   * @param {String|ObjctId} restaurantId
+   * @param {Object} table a restaurant table data
+   * @return {Promise}
+   */
   async updateTable(restaurantId, table) {
     return Restaurant.findOneAndUpdate({
-      _id: restaurantId,
-      'tables._id': table._id
+      '_id': restaurantId,
+      'tables._id': table._id,
     },
     {
       'tables.$.name': table.name,
       'tables.$.smoking': table.smoking,
       'tables.$.outdoor': table.outdoor,
-      'tables.$.floor': table.floor
+      'tables.$.floor': table.floor,
     },
     {
       upsert: false,
-      returnDocument: 'after'
+      returnDocument: 'after',
     });
   }
 
+  /**
+   * @return {Promise}
+   */
   async checkReservationValidity() {
     const checkIsTableFree = this._isTableFreeForReservation();
     const checkWorkingHours = this._isReservationInWorkingHours();
@@ -99,38 +135,51 @@ class RestaurantService {
       checkIsValidDate,
       checkIsTableFree,
       checkTableEnable,
-      checkCapacity
+      checkCapacity,
     ]);
   }
 
+  /**
+   * @return {Promise}
+   * @throw {APIError}
+   */
   async _checkCapacity() {
-    const table = this.restaurant.tables.find((table => table.id.valueOf() === this.reservation.tableId.valueOf()));
+    const table = this.restaurant.tables.find(
+        (table) => table.id.valueOf() === this.reservation.tableId.valueOf());
     if (this.reservation.people <= table.seat) {
       return true;
     }
 
-    throw new APIError('The seat capacity of this table is not enough for this reservation!', {
+    throw new APIError('The seat capacity of this table is not enough!', {
       table: table._id,
       capacity: table.seat,
-      requiredCapacity: this.reservation.people
+      requiredCapacity: this.reservation.people,
     });
   }
 
+  /**
+   * @return {Boolean}
+   */
   async _isTableEnableForReservation() {
-    const table = this.restaurant.tables.find(table => table.id.valueOf() === this.reservation.tableId.valueOf());
+    const table = this.restaurant.tables.find(
+        (table) => table.id.valueOf() === this.reservation.tableId.valueOf());
     if (!table) {
       throw new APIError('This table is not reservable!', {
-        tableId: this.reservation.tableId
+        tableId: this.reservation.tableId,
       });
     }
     return true;
   }
 
+  /**
+   * @return {Boolean}
+   * @throw {APIError}
+   */
   async _isTableFreeForReservation() {
     const query = {
       tableId: this.reservation.tableId,
       restaurantId: this.reservation.restaurantId,
-      time: this.reservation.time
+      time: this.reservation.time,
     };
     const result = await Reservation.findOne(query).exec();
 
@@ -142,9 +191,16 @@ class RestaurantService {
       return true;
     }
 
-    throw new APIError('The table you selected is already reserved for this time!', {...result._doc});
+    throw new APIError(
+        'The table you selected is already reserved',
+        {...result._doc},
+    );
   }
 
+  /**
+   * @return {Boolean}
+   * @throw {APIError}
+   */
   async _isValidReservationDate() {
     const min = new Date();
     const max = new Date(new Date().setFullYear(min.getFullYear() + 1));
@@ -152,19 +208,29 @@ class RestaurantService {
 
     if (time < min || time > max) {
       throw new APIError(
-        `You can make reservation only between ${min.toISOString()} and ${max.toISOString()}`, { min, max }
+          `You can make reservation only between
+          ${min.toISOString()} and ${max.toISOString()}`,
+          {min, max},
       );
     }
+    return true;
   }
 
+  /**
+   * @return {Boolean}
+   * @throw {APIError}
+   */
   async _isReservationInWorkingHours() {
     const time = new Date(this.reservation.time);
 
     const weekDay = this.restaurant.workingHours.find(
-      item => item.day === time.getDay()
+        (item) => item.day === time.getDay(),
     );
     if (!weekDay.open) {
-      throw new APIError('The restaurant is closed on the day you choose!', { isOpen: weekDay.open });
+      throw new APIError(
+          'The restaurant is closed on the day you choose!',
+          {isOpen: weekDay.open},
+      );
     }
 
     const opening = new Date(time);
@@ -174,13 +240,12 @@ class RestaurantService {
 
     if (time < opening || time >= closing) {
       throw new APIError(
-        'The time you have chosen is not within the working hours of our restaurant!',
-        { opening, closing, time }
+          'Selected time is not within the working hours of our restaurant!',
+          {opening, closing, time},
       );
     }
     return true;
   }
-
 }
 
 export default RestaurantService;

@@ -1,5 +1,5 @@
 import log4js from 'log4js';
-import config from './index.js'
+import config from './index.js';
 
 log4js.configure({
   appenders: {
@@ -14,15 +14,15 @@ log4js.configure({
     errorsOnly: {
       type: 'logLevelFilter',
       appender: 'errors',
-      level: 'error'
-    }
+      level: 'error',
+    },
   },
   categories: {
     default: {
       appenders: ['errorsOnly', 'allLogs'],
-      level: 'trace'
-    }
-  }
+      level: 'trace',
+    },
+  },
 });
 
 export default log4js.getLogger();

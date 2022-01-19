@@ -3,28 +3,26 @@
  *
  * @group unit
  */
-import { jest } from '@jest/globals';
+import {jest} from '@jest/globals';
 import RestaurantService from './restaurant.js';
 import Restaurant from '../models/restaurant.js';
 import Reservation from '../models/reservation.js';
 
 describe('Restaurant Service', () => {
-
   beforeEach(() => {
     expect.hasAssertions();
 
     Restaurant.findOneAndUpdate = jest.fn(function() {
       return {
         lean: function() {
-          return arguments;
-        }
+          return true;
+        },
       };
     });
 
     Reservation.deleteOne = jest.fn(function() {
       return Promise.resolve(1);
     });
-
   });
 
 
@@ -35,17 +33,17 @@ describe('Restaurant Service', () => {
       hour: 11,
       duration:
       600, day: 1,
-      open: true
+      open: true,
     }];
-    const modelOptions = { upsert: false, returnDocument: 'after' };
+    const modelOptions = {upsert: false, returnDocument: 'after'};
 
     await service.updateWorkingHours(restaurantId, data);
 
     const params = Restaurant.findOneAndUpdate.mock.calls[0];
 
     expect(Restaurant.findOneAndUpdate).toHaveBeenCalled();
-    expect(params[0]).toEqual({ _id: restaurantId });
-    expect(params[1]).toEqual({ "workingHours": data });
+    expect(params[0]).toEqual({_id: restaurantId});
+    expect(params[1]).toEqual({'workingHours': data});
     expect(params[2]).toEqual(modelOptions);
   });
 
@@ -53,16 +51,16 @@ describe('Restaurant Service', () => {
     const service = new RestaurantService();
     const restaurantId = 1;
     const table = {
-      name: "my-table",
+      name: 'my-table',
       smooking: false,
       outdoor: false,
       seat: 2,
-      floor: 1
+      floor: 1,
     };
 
     const modelOptions = {
       upsert: false,
-      returnDocument: 'after'
+      returnDocument: 'after',
     };
 
     await service.addTable(restaurantId, table);
@@ -70,11 +68,11 @@ describe('Restaurant Service', () => {
 
     expect(Restaurant.findOneAndUpdate).toHaveBeenCalled();
     expect(params[0]).toEqual({
-      _id: restaurantId,
-      'tables.name': { $ne: table.name }
+      '_id': restaurantId,
+      'tables.name': {$ne: table.name},
     });
     expect(params[1]).toEqual({
-      $push: { tables: table}
+      $push: {tables: table},
     });
     expect(params[2]).toEqual(modelOptions);
   });
@@ -91,11 +89,11 @@ describe('Restaurant Service', () => {
     const service = new RestaurantService();
     service.restaurant = {
       workingHours: [
-        { hour: 10, duration: 900, day: 1 , open: true },
-      ]
+        {hour: 10, duration: 900, day: 1, open: true},
+      ],
     };
     service.reservation = {
-      time: '2022-02-14T12:00:00.000Z'
+      time: '2022-02-14T12:00:00.000Z',
     };
 
     const result = await service._isReservationInWorkingHours();
@@ -106,16 +104,16 @@ describe('Restaurant Service', () => {
     const service = new RestaurantService();
     service.restaurant = {
       workingHours: [
-        { hour: 10, duration: 90, day: 1 , open: true },
-      ]
+        {hour: 10, duration: 90, day: 1, open: true},
+      ],
     };
     service.reservation = {
-      time: '2022-02-14T12:00:00.000Z'
+      time: '2022-02-14T12:00:00.000Z',
     };
 
     await expect(service._isReservationInWorkingHours())
-      .rejects
-      .toThrow(/is not within the working hours/);
+        .rejects
+        .toThrow(/is not within the working hours/);
   });
 
 
@@ -123,16 +121,16 @@ describe('Restaurant Service', () => {
     const service = new RestaurantService();
     service.restaurant = {
       workingHours: [
-        { hour: 10, duration: 900, day: 1 , open: false },
-      ]
+        {hour: 10, duration: 900, day: 1, open: false},
+      ],
     };
     service.reservation = {
-      time: '2022-02-14T12:00:00.000Z'
+      time: '2022-02-14T12:00:00.000Z',
     };
 
     await expect(service._isReservationInWorkingHours())
-      .rejects
-      .toThrow(/restaurant is closed/);
+        .rejects
+        .toThrow(/restaurant is closed/);
   });
 
 
@@ -140,35 +138,35 @@ describe('Restaurant Service', () => {
     const service = new RestaurantService();
     service.restaurant = {
       workingHours: [
-        { hour: 10, duration: 900, day: 6 , open: true },
-      ]
+        {hour: 10, duration: 900, day: 6, open: true},
+      ],
     };
     service.reservation = {
-      time: '2022-01-01T12:00:00.000Z'
+      time: '2022-01-01T12:00:00.000Z',
     };
 
     await expect(service._isValidReservationDate())
-      .rejects
-      .toThrow(/You can make reservation only between/);
+        .rejects
+        .toThrow(/You can make reservation only between/);
   });
 
   it('Should FAIL reservation date more than a year', async () => {
     const service = new RestaurantService();
     service.restaurant = {
       workingHours: [
-        { hour: 10, duration: 900, day: 6 , open: true },
-      ]
+        {hour: 10, duration: 900, day: 6, open: true},
+      ],
     };
 
     const time = new Date();
     time.setMonth(13);
 
     service.reservation = {
-      time: time.toISOString()
+      time: time.toISOString(),
     };
 
     await expect(service._isValidReservationDate())
-      .rejects
-      .toThrow(/You can make reservation only between/);
+        .rejects
+        .toThrow(/You can make reservation only between/);
   });
 });

@@ -1,11 +1,14 @@
-import { Router } from 'express';
+import {Router} from 'express';
 
 import restaurant from './restaurant.js';
 import reservation from './reservation.js';
 import settings from './settings.js';
 
+/**
+ * @return {Router}
+ */
 export default function routes() {
-  const appRouter = Router();
+  const appRouter = new Router();
 
   restaurant(appRouter);
   settings(appRouter);

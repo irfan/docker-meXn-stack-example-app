@@ -1,163 +1,166 @@
-db.createCollection("restaurants", {
+db.createCollection('restaurants', {
   validator: {
     $jsonSchema: {
-      title: "The list of companies using our systems",
-      bsonType: "object",
-      required: [ "name", "phone", "email" ],
+      title: 'The list of companies using our systems',
+      bsonType: 'object',
+      required: ['name', 'phone', 'email'],
       properties: {
         _id: {
-          bsonType: "objectId"
+          bsonType: 'objectId',
         },
         name: {
-          bsonType: "string",
-          description: "Restaurant name is required"
+          bsonType: 'string',
+          description: 'Restaurant name is required',
         },
         phone: {
-          bsonType: "string",
-          pattern: "^[0-9]{7,14}$",
-          description: "Phone number is required"
+          bsonType: 'string',
+          pattern: '^[0-9]{7,14}$',
+          description: 'Phone number is required',
         },
         email: {
-          bsonType: "string",
-          pattern: "^.+\@.+$",
-          description: "Email address is required"
+          bsonType: 'string',
+          pattern: '^.+\@.+$',
+          description: 'Email address is required',
         },
         location: {
-          bsonType: "object",
-          required: [ "type", "coordinates" ],
+          bsonType: 'object',
+          required: ['type', 'coordinates'],
           properties: {
             type: {
-              bsonType: "string",
-              "enum": ["Point"]
+              'bsonType': 'string',
+              'enum': ['Point'],
             },
             coordinates: {
-              title: "Geo Coordinates",
-              description: "The location of the restaurant",
-              bsonType: "array",
+              title: 'Geo Coordinates',
+              description: 'The location of the restaurant',
+              bsonType: 'array',
               minItems: 2,
               maxItems: 2,
               items: [
                 {
-                  bsonType: "double",
+                  bsonType: 'double',
                   minimum: -180,
-                  maximum: 180
+                  maximum: 180,
                 },
                 {
-                  bsonType: "double",
+                  bsonType: 'double',
                   minimum: -90,
-                  maximum: 90
-                }
-              ]
-            }
-          }
+                  maximum: 90,
+                },
+              ],
+            },
+          },
         },
         address: {
-          bsonType: "string",
+          bsonType: 'string',
         },
         workingHours: {
-          bsonType: "array",
+          bsonType: 'array',
           minItems: 7,
           maxItems: 7,
           uniqueItems: true,
           items: {
-            bsonType: "object",
-            required: ["hour", "day", "duration", "open"],
+            bsonType: 'object',
+            required: ['hour', 'day', 'duration', 'open'],
             properties: {
               hour: {
-                bsonType: "int",
+                bsonType: 'int',
                 minimum: 0,
                 maximum: 23,
-                description: "hour must be an int between 0 to 23"
-              }, 
+                description: 'hour must be an int between 0 to 23',
+              },
               day: {
-                bsonType: "int",
+                bsonType: 'int',
                 minimum: 0,
                 maximum: 6,
-                description: "the day (weekday) must be an int between 0 to 6"
-              }, 
+                description: 'the day (weekday) must be an int between 0 to 6',
+              },
               duration: {
-                bsonType: "int",
+                bsonType: 'int',
                 minimum: 0,
                 maximum: 1440,
-                description: "the duration (open duraiton) must be an int between 0 to 1440"
-              }, 
+                description: 'must be an int between 0 to 1440',
+              },
               open: {
-                bsonType: "bool"
-              }
-            }
-          }
+                bsonType: 'bool',
+              },
+            },
+          },
         },
         tables: {
-          bsonType: "array",
+          bsonType: 'array',
           items: {
-            bsonType: "object",
-            required: ["name", "smoking", "outdoor", "floor", "seat"],
+            bsonType: 'object',
+            required: ['name', 'smoking', 'outdoor', 'floor', 'seat'],
             properties: {
               _id: {
-                bsonType: "objectId"
+                bsonType: 'objectId',
               },
               name: {
-                bsonType: "string"
+                bsonType: 'string',
               },
               smoking: {
-                bsonType: "bool"
+                bsonType: 'bool',
               },
               outdoor: {
-                bsonType: "bool"
+                bsonType: 'bool',
               },
               seat: {
-                bsonType: "int",
+                bsonType: 'int',
                 minimum: 1,
-                maximum: 100
+                maximum: 100,
               },
               floor: {
-                bsonType: "int"
-              }
-            }
-          }
-        }
-      }
-    }
-  }
+                bsonType: 'int',
+              },
+            },
+          },
+        },
+      },
+    },
+  },
 });
 
-db.createCollection("reservations", {
+db.createCollection('reservations', {
   validator: {
     $jsonSchema: {
-      bsonType: "object",
-      required: [ "restaurantId", "name", "phone", "time", "tableId"],
+      bsonType: 'object',
+      required: ['restaurantId', 'name', 'phone', 'time', 'tableId'],
       properties: {
         _id: {
-          bsonType: "objectId"
+          bsonType: 'objectId',
         },
         name: {
-          bsonType: "string"
+          bsonType: 'string',
         },
         phone: {
-          bsonType: "string",
-          pattern: "^[0-9]{7,14}$"
+          bsonType: 'string',
+          pattern: '^[0-9]{7,14}$',
         },
         people: {
-          bsonType: "int",
+          bsonType: 'int',
           minimum: 1,
-          maximum: 100
+          maximum: 100,
         },
         restaurantId: {
-          bsonType: "objectId",
-          description: "restaurant objectId is required in reservation"
+          bsonType: 'objectId',
+          description: 'restaurant objectId is required in reservation',
         },
         time: {
-          bsonType: "string",
-          description: "Reservation date"
+          bsonType: 'string',
+          description: 'Reservation date',
         },
         tableId: {
-          bsonType: "objectId",
-          description: "Reservation table id is required"
-        }
-      }
-    }
-  }
+          bsonType: 'objectId',
+          description: 'Reservation table id is required',
+        },
+      },
+    },
+  },
 });
 
-db.reservations.createIndex({ "restaurantId":1, "tableId":1, "time":1 }, { unique:true });
+db.reservations.createIndex(
+    {'restaurantId': 1, 'tableId': 1, 'time': 1},
+    {unique: true},
+);
 

@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 
-if(dotenv.config().error) {
+if (dotenv.config().error) {
   throw new Error('dotenv not found!');
 }
 
@@ -25,6 +25,6 @@ export default {
     dbName: process.env.DB_NAME,
     authSource: process.env.DB_AUTH_SOURCE,
     user: process.env.DB_USER,
-    pass: process.env.DB_PASS
-  }
+    pass: process.env.DB_PASS,
+  },
 };

@@ -7,10 +7,10 @@ const logger = log4js.getLogger();
 export default async () => {
   try {
     return (await mongoose.connect(
-      config.connectionString, config.connectionOptions)
+        config.connectionString, config.connectionOptions)
     ).connection.db;
-  } catch(e) {
+  } catch (e) {
     logger.error(e);
     throw (e);
   }
-}
+};

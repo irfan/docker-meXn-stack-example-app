@@ -1,8 +1,14 @@
 import log4js from 'log4js';
 const logger = log4js.getLogger();
 
+/**
+ * @class APIError
+ */
 export class APIResponse {
-
+/**
+ * @constructor
+ * @param { Error | Object} instance
+ */
   constructor(instance) {
     if (instance instanceof Error) {
       logger.error(instance);
@@ -12,13 +18,17 @@ export class APIResponse {
     }
   }
 
+  /**
+   * @param { Error } instance
+   * @return { APIError } error response
+   */
   responseError(instance) {
     if (instance.name === 'MongoServerError') {
       return Object.assign(this, {
         errors: [{
           name: 'DatabaseError',
-          msg: 'Unable to proceed the request!'
-        }]
+          msg: 'Unable to proceed the request!',
+        }],
       });
     }
 
@@ -26,8 +36,8 @@ export class APIResponse {
       return Object.assign(this, {
         errors: [{
           name: 'DataValidationError',
-          msg: 'Unable to validate the data you posted!'
-        }]
+          msg: 'Unable to validate the data you posted!',
+        }],
       });
     }
 
@@ -36,15 +46,19 @@ export class APIResponse {
         errors: [{
           name: instance.name,
           msg: instance.message,
-          details: instance.details
-        }]
+          details: instance.details,
+        }],
       });
     }
   }
 
+  /**
+   * @param { Object } instance
+   * @return { APIResponse } success response
+   */
   responseSuccess(instance) {
     return Object.assign(this, {
-      data: instance
+      data: instance,
     });
   }
 }

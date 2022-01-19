@@ -1,0 +1,10 @@
+{
+  "eslint": {
+    "executeAutofix": true,
+    "alwaysShowStatus": true,
+    "autoFixOnSave": true,
+    "workingDirectories": "./src",
+    "execArgv": ["--fix"],
+    "comma-dangle": ["error", "never"]
+  }
+}

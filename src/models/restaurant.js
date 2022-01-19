@@ -1,67 +1,66 @@
 import mongoose from 'mongoose';
-import { ObjectId } from 'mongodb';
 
 const WorkingHours = new mongoose.Schema({
   hour: {
     type: Number,
     required: [true, 'Opening hour is mandatory'],
-    min:0,
-    max:23
+    min: 0,
+    max: 23,
   },
   day: {
     type: Number,
     required: [true, 'Day of the week is mandatory'],
-    min:0,
-    max:6
+    min: 0,
+    max: 6,
   },
   duration: {
     type: Number,
     min: 60,
-    max: 1440
+    max: 1440,
   },
   open: {
-    type: Boolean
-  }
-}, { _id: false });
+    type: Boolean,
+  },
+}, {_id: false});
 
 
 const Tables = new mongoose.Schema({
   name: {
     type: String,
     unique: true,
-    required: [true, 'Name field required!']
+    required: [true, 'Name field required!'],
   },
   smoking: {
-    type: Boolean
+    type: Boolean,
   },
   outdoor: {
-    type: Boolean
+    type: Boolean,
   },
   seat: {
     type: Number,
     required: false,
-    default: 1
+    default: 1,
   },
   floor: {
     type: Number,
     required: false,
-    default: 0
-  }
+    default: 0,
+  },
 },
 {
   _id: true,
-  timestamps: true
+  timestamps: true,
 });
 
 
 const Restaurant = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'Please enter a restaurant name']
+    required: [true, 'Please enter a restaurant name'],
   },
   phone: {
     type: String,
-    required: [true, 'Please enter a valid contact number']
+    required: [true, 'Please enter a valid contact number'],
   },
   email: {
     type: String,
@@ -72,27 +71,27 @@ const Restaurant = new mongoose.Schema({
     type: {
       type: String,
       enum: ['Point'],
-      required: true
+      required: true,
     },
     coordinates: {
       type: [Number],
-      required: true
-    }
+      required: true,
+    },
   },
   address: String,
   workingHours: {
     type: [WorkingHours],
-    required: false
+    required: false,
   },
   tables: {
     type: [Tables],
-    required: false
-  }
+    required: false,
+  },
 },
 {
   collection: 'restaurants',
   timestamps: true,
-  versionKey: false
+  versionKey: false,
 });
 
 export default mongoose.model('Restaurant', Restaurant);
