@@ -5,8 +5,7 @@
  */
 import request from 'supertest';
 import API from '../index.js';
-
-import RestaurantService from '../../src/services/restaurant.js';
+import RestaurantService from '../../src/booking_manager/services/restaurant.js';
 
 describe('Restaurant Settings', () => {
   // test working hours endpoints

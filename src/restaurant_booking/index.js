@@ -11,11 +11,11 @@ const initialize = (await import('./init/index.js')).init(app);
 
 initialize.then((promises) => {
   Promise.all(promises).then((results) => {
-    logger.info('Booking Manager Services up & ready!');
+    logger.info('Restaurant Booking Services up & ready!');
 
     app.listen(config.port, () => {
       logger.info(`
-      === Booking manager server is ready on port ${config.port} ===
+      === Restaurant Booking server is ready on port ${config.port} ===
       `);
     }).on('error', (err) => {
       logger.error(err);

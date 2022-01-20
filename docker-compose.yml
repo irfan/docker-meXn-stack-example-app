@@ -2,19 +2,48 @@ version: '3.8'
 
 services:
 
+  restaurant_booking:
+    restart: unless-stopped
+    image: rb
+    depends_on:
+      - mongodb
+      - booking_manager
+    build: 
+      context: .
+      dockerfile: Dockerfile.restaurant_booking
+    command: node src/restaurant_booking/index.js
+    ports:
+      - ${RESTAURANT_BOOKING_PORT}:${RESTAURANT_BOOKING_PORT}
+    volumes:
+      - ./logs/:${RESTAURANT_BOOKING_LOG_PATH}
+    environment:
+      - APP_NAME=${RESTAURANT_BOOKING_APP_NAME}
+      - LOG_PATH=${RESTAURANT_BOOKING_LOG_PATH}
+      - PORT=${RESTAURANT_BOOKING_PORT}
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - DB_NAME=${DB_NAME}
+      - DB_AUTH_SOURCE=${DB_AUTH_SOURCE}
+
+
   booking_manager:
-    restart: on-failure
+    restart: unless-stopped
     image: bm
     depends_on:
       - mongodb
-    build: .
-    command: node src/index.js
+    build:
+      context: .
+      dockerfile: Dockerfile.booking_manager
+    command: node src/booking_manager/index.js
     ports:
-      - 8080:8080
+      - ${BOOKING_MANAGER_PORT}:${BOOKING_MANAGER_PORT}
     volumes:
-      - .:${APPLICATION_ROOT_PATH}
+      - ./logs/:${BOOKING_MANAGER_LOG_PATH}
     environment:
-      - PORT=${PORT}
+      - APP_NAME=${BOOKING_MANAGER_APP_NAME}
+      - LOG_PATH=${BOOKING_MANAGER_LOG_PATH}
+      - PORT=${BOOKING_MANAGER_PORT}
       - DB_HOST=${DB_HOST}
       - DB_USER=${DB_USER}
       - DB_PASS=${DB_PASS}
@@ -24,23 +53,23 @@ services:
   mongodb:
     image : mongo
     container_name: mongodb
-    restart: on-failure
     volumes:
       - ./db/mongodb/:/data/db/
       - ./init-database-scripts:/docker-entrypoint-initdb.d
     ports:
-      - 27017:27017
+      - ${DB_PORT}:${DB_PORT}
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${DB_ROOT_USER}
       - MONGO_INITDB_ROOT_PASSWORD=${DB_ROOT_PASS}
       - MONGO_INITDB_DATABASE=${DB_NAME}
       - DB_USER=${DB_USER}
       - DB_PASS=${DB_PASS}
+      - DB_PORT=${DB_PORT}
     healthcheck:
       start_period: 40s
       interval: 30s
       timeout: 10s
       retries: 3
-      test: echo 'db.runCommand("ping").ok' | mongo mongodb:27017/test --quiet
+      test: echo 'db.runCommand("ping").ok' | mongo mongodb:${DB_PORT}/test --quiet
     restart: unless-stopped
 

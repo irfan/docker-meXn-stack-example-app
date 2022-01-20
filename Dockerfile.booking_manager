@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:alpine
 USER node
 WORKDIR /apis/booking_manager
 COPY --chown=node:node . .

@@ -6,7 +6,7 @@
 
 import request from 'supertest';
 import API from '../index.js';
-import RestaurantService from '../../src/services/restaurant.js';
+import RestaurantService from '../../src/booking_manager/services/restaurant.js';
 
 import {nextSunday, nextWednesday, nextTuesday} from 'date-fns';
 
@@ -45,7 +45,7 @@ describe('Reservation Endpoint', () => {
           });
     });
 
-    test('Should NOT create a new reservation if table capacity isnt enough', (done) => {
+    test('Should throw APIError if table capacity isnt enough', (done) => {
       const invalidData = Object.assign({}, data);
       invalidData.people = 12;
 

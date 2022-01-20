@@ -1,0 +1,7 @@
+FROM node:alpine
+USER node
+WORKDIR /apis/restaurant_booking
+COPY --chown=node:node . .
+RUN npm install
+EXPOSE 3000
+CMD ["node", "src/restaurant_booking/index.js"]
