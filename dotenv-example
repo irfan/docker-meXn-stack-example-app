@@ -1,12 +1,23 @@
-PORT=8080
+# common env vars
 API_SERVE_PATH=/api
-APPLICATION_ROOT_PATH=/apis/booking_manager
-APPLICATION_LOG_PATH=./logs
 DB_HOST=mongodb
+DB_AUTH_SOURCE=admin
 DB_ROOT_USER=root
 DB_ROOT_PASS=root
 DB_USER=super
 DB_PASS=super
 DB_NAME=super
 DB_PORT=27017
-DB_AUTH_SOURCE=admin
+
+# booking manager specific
+BOOKING_MANAGER_APP_NAME=booking_manager
+BOOKING_MANAGER_PORT=8080
+BOOKING_MANAGER_ROOT_DIR=/apis/booking_manager
+BOOKING_MANAGER_LOG_PATH=/apis/booking_manager/logs/
+
+# restaurant booking sepcific
+RESTAURANT_BOOKING_APP_NAME=restaurant_booking
+RESTAURANT_BOOKING_PORT=3000
+RESTAURANT_BOOKING_ROOT_DIR=/apis/restaurant_booking
+RESTAURANT_BOOKING_LOG_PATH=/apis/restaurant_booking/logs/
+

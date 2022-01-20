@@ -4,3 +4,4 @@ db/*
 .env
 logs/*
 *.swp
+*.swo

@@ -11,11 +11,13 @@ This repository contains an API source code that build with NodeJS, ExpressJS, M
 
 ### Directory Structure:
 
-I'm going to tell a bit more about how the project structured. Please see the directory structure below:
 ```bash
 .
-├── Dockerfile
+├── Dockerfile.booking_manager
+├── Dockerfile.restaurant_booking
+├── LICENSE
 ├── README.md
+├── coc-settings.json
 ├── db
 │   └── mongodb
 ├── docker-compose.yml
@@ -28,30 +30,42 @@ I'm going to tell a bit more about how the project structured. Please see the di
 ├── package-lock.json
 ├── package.json
 ├── src
-│   ├── config
+│   ├── booking_manager
+│   │   ├── config
+│   │   │   ├── index.js
+│   │   │   └── logger.js
 │   │   ├── index.js
-│   │   └── logger.js
-│   ├── index.js
-│   ├── init
-│   │   ├── database.js
-│   │   ├── express.js
-│   │   └── index.js
-│   ├── lib
-│   │   ├── APIError.js
-│   │   └── APIResponse.js
-│   ├── middleware
-│   │   └── sanitizer.js
-│   ├── models
-│   │   ├── reservation.js
-│   │   └── restaurant.js
-│   ├── routes
-│   │   ├── index.js
-│   │   ├── reservation.js
-│   │   ├── restaurant.js
-│   │   └── settings.js
-│   └── services
-│       ├── restaurant.test.js
-│       └── restaurant.js
+│   │   ├── init
+│   │   │   ├── database.js
+│   │   │   ├── express.js
+│   │   │   └── index.js
+│   │   ├── lib
+│   │   │   ├── APIError.js
+│   │   │   └── APIResponse.js
+│   │   ├── middleware
+│   │   │   └── sanitizer.js
+│   │   ├── models
+│   │   │   ├── reservation.js
+│   │   │   └── restaurant.js
+│   │   ├── routes
+│   │   │   ├── index.js
+│   │   │   ├── reservation.js
+│   │   │   ├── restaurant.js
+│   │   │   └── settings.js
+│   │   └── services
+│   │       ├── restaurant.js
+│   │       └── restaurant.test.js
+│   └── restaurant_booking
+│       ├── config
+│       │   ├── index.js
+│       │   └── logger.js
+│       ├── index.js
+│       ├── init
+│       │   ├── database.js
+│       │   ├── express.js
+│       │   └── index.js
+│       └── routes
+│           └── index.js
 └── tests
     ├── index.js
     ├── integration
@@ -63,12 +77,16 @@ I'm going to tell a bit more about how the project structured. Please see the di
 As we see there are mandatory files like Dockerfile, package.json, docker-compose.yml etc.. 
 - `db/mongodb` folder is the folder that is going to be mounted to the MongoDB docker container.
 - `init-database-scripts` contains files like creating credentials for database, initializing schema validations and filling the DB with some fixtures that we are going to use during the integration test.
-- `logs` folder is the plase where we put our application error and debug logs.
-- `src` folder is the place where we store our main source code, very clean solution.
-- `tests` folder is the place where we put our tests, both integration and unit tests.
+- `logs` folder is the place where we put our application error and debug logs.
+- `src` folder is the place we store our microservice source code including unit tests. Currently we have 2 microsevices, called `booking_manager` and `restaurant_booking`.
+- `tests` folder is the place where we put our integration tests, unit tests are living together with the main source files.
 
-Please see src/index.js to see how we initialize our application.
+Please see `src/booking_manager/index.js` to see how we initialize our application.
+After latest updates, now our repository support multiple microservice that using same `node_modules` folder and main configurations. We moved the files from `src` to `src/booking_manager` and created a new directory `src/restaurant_booking`.
 
+I also created another docker file for our new microservice and make necessary changes in docker-compose and `dotenv-example` files as well.
+
+To see the second microservice you need to visit [http://localhost:3000](http://localhost:3000) It's just example empty microservice contains only express/database/config initialization. 
 
 ## Start the application
 First step is to install Docker to your computer.
@@ -86,19 +104,31 @@ Creating mongodb ... done
 Creating mexn_booking_manager_1 ... done
 ```
 
-Please go open `logs/debug.log`, if the application started succesifully you should see something like:
+Please execute `tail -f logs/debug*.log` to see debug logs of all the microservices. If everything goes right we should see something like below:
 ```bash
-[2022-01-17T11:59:23.216] [INFO] default - Initializing services...
-[2022-01-17T11:59:23.257] [INFO] default - √ Log4JS configured
-[2022-01-17T11:59:23.257] [INFO] default - √ API ready
-[2022-01-17T11:59:23.333] [INFO] default - √ MongoDB ready
-[2022-01-17T11:59:23.333] [INFO] default - Services up & ready!
-[2022-01-17T11:59:23.336] [INFO] default -
+
+==> logs/debug.booking_manager.log <==
+[2022-01-20T05:11:28.192] [INFO] default - Initializing services...
+[2022-01-20T05:11:28.304] [INFO] default - √ Log4JS configured
+[2022-01-20T05:11:28.304] [INFO] default - √ API ready
+[2022-01-20T05:11:32.972] [INFO] default - √ MongoDB ready
+[2022-01-20T05:11:32.975] [INFO] default - Booking Manager Services up & ready!
+[2022-01-20T05:11:32.978] [INFO] default -
       === Booking manager server is ready on port 8080 ===
+
+
+==> logs/debug.restaurant_booking.log <==
+[2022-01-20T05:11:28.633] [INFO] default - Initializing services...
+[2022-01-20T05:11:28.667] [INFO] default - √ Log4JS configured
+[2022-01-20T05:11:28.667] [INFO] default - √ API ready
+[2022-01-20T05:11:33.292] [INFO] default - √ MongoDB ready
+[2022-01-20T05:11:33.293] [INFO] default - Restaurant Booking Services up & ready!
+[2022-01-20T05:11:33.295] [INFO] default -
+      === Restaurant Booking server is ready on port 3000 ===
 ```
 
 
-Keep an eye on this logs/debug.log file during development and test executions.
+Keep an eye on these log files during development and test can be helpful.
 
 The application structure is similar to \*NIX systems. The services above started by the files under src/init folder. 
 Each file is a service and initilazing before we open the HTTP Server.  
@@ -131,12 +161,6 @@ $ docker-compose run booking_manager npm test -- --group=integration
 
 #### Example Output:  
 ```bash
-$ docker-compose run booking_manager npm test -- --group=integration
-Creating mexn_booking_manager_run ... done
-
-> booking_manager@1.0.0 test
-> node --no-warnings --experimental-vm-modules node_modules/jest/bin/jest.js "--group=integration"
-
  PASS  tests/integration/restaurant.test.js (16.82 s)
   Restaurant
     ✓ GET main page (141 ms)
@@ -174,11 +198,6 @@ Tests:       19 passed, 19 total
 Snapshots:   0 total
 Time:        20.922 s
 Ran all test suites.
-npm notice
-npm notice New minor version of npm available! 8.1.2 -> 8.3.1
-npm notice Changelog: https://github.com/npm/cli/releases/tag/v8.3.1
-npm notice Run npm install -g npm@8.3.1 to update!
-npm notice
 ```
 
 
