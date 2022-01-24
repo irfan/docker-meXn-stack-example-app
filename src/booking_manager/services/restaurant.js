@@ -1,6 +1,6 @@
-import Restaurant from '../models/restaurant.js';
-import Reservation from '../models/reservation.js';
-import {APIError} from '../lib/APIError.js';
+import Restaurant from '../../commonlib/models/restaurant.js';
+import Reservation from '../../commonlib/models/reservation.js';
+import {APIError} from '../../commonlib/lib/APIError.js';
 
 /**
  * Restaurat service

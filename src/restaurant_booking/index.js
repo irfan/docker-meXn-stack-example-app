@@ -1,8 +1,8 @@
 'use strict';
 import express from 'express';
-
-import config from './config/index.js';
 import log4js from 'log4js';
+
+import config from '../commonlib/config/index.js';
 
 const logger = log4js.getLogger();
 const app = express();

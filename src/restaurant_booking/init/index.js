@@ -1,6 +1,6 @@
-import mongoose from './database.js';
+import mongoose from '../../commonlib/init/database.js';
 import server from './express.js';
-import logger from '../config/logger.js';
+import logger from '../../commonlib/config/logger.js';
 
 /**
  * @param {Express} app

@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 
-import config from '../config/index.js';
+import config from '../../commonlib/config/index.js';
 import routes from '../routes/index.js';
 import log4js from 'log4js';
 

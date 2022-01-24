@@ -5,8 +5,8 @@
  */
 import {jest} from '@jest/globals';
 import RestaurantService from './restaurant.js';
-import Restaurant from '../models/restaurant.js';
-import Reservation from '../models/reservation.js';
+import Restaurant from '../../commonlib/models/restaurant.js';
+import Reservation from '../../commonlib/models/reservation.js';
 
 describe('Restaurant Service', () => {
   beforeEach(() => {

@@ -2,15 +2,15 @@ import {Router} from 'express';
 import {body, check, validationResult} from 'express-validator';
 import log4js from 'log4js';
 import RestaurantService from '../services/restaurant.js';
-import {APIResponse} from '../lib/APIResponse.js';
-import {APIError} from '../lib/APIError.js';
+import {APIResponse} from '../../commonlib/lib/APIResponse.js';
+import {APIError} from '../../commonlib/lib/APIError.js';
 
 import {
   bodyMongoId,
   paramMongoId,
   allowOnly,
   allowArrayOnly,
-} from '../middleware/sanitizer.js';
+} from '../../commonlib/validators/sanitizer.js';
 
 const logger = log4js.getLogger();
 const router = new Router({mergeParams: true});

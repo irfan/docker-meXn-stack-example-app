@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import mongooseConnect from '../src/booking_manager/init/database.js';
+import mongooseConnect from '../src/commonlib/init/database.js';
 
 beforeAll(done => {
   mongooseConnect();

@@ -1,17 +1,17 @@
 import {Router} from 'express';
 import log4js from 'log4js';
 import {check, validationResult} from 'express-validator';
+import Reservation from '../../commonlib/models/reservation.js';
+import Restaurant from '../../commonlib/models/restaurant.js';
 
-import Reservation from '../models/reservation.js';
-import Restaurant from '../models/restaurant.js';
 import RestaurantService from '../services/restaurant.js';
-import {APIResponse} from '../lib/APIResponse.js';
+import {APIResponse} from '../../commonlib/lib/APIResponse.js';
 import {
   paramMongoId,
   bodyMongoId,
   reservationTime,
   allowOnly,
-} from '../middleware/sanitizer.js';
+} from '../../commonlib/validators/sanitizer.js';
 
 const router = new Router({mergeParams: true});
 const logger = log4js.getLogger();

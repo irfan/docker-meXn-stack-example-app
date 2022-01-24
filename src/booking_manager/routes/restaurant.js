@@ -1,8 +1,8 @@
 import {Router} from 'express';
-import Restaurant from '../models/restaurant.js';
-import {paramMongoId} from '../middleware/sanitizer.js';
-import {APIResponse} from '../lib/APIResponse.js';
-import {APIError} from '../lib/APIError.js';
+import Restaurant from '../../commonlib/models/restaurant.js';
+import {paramMongoId} from '../../commonlib/validators/sanitizer.js';
+import {APIResponse} from '../../commonlib/lib/APIResponse.js';
+import {APIError} from '../../commonlib/lib/APIError.js';
 
 const router = new Router();
 
