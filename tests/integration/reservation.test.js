@@ -1,12 +1,12 @@
 /**
- * Test reservation API
+ * Test restaurant API service
  *
  * @group integration
  */
 
 import request from 'supertest';
 import API from '../index.js';
-import RestaurantService from '../../src/booking_manager/services/restaurant.js';
+import ReservationService from '../../src/booking_manager/services/reservation.js';
 
 import {nextSunday, nextWednesday, nextTuesday} from 'date-fns';
 
@@ -36,12 +36,12 @@ describe('Reservation Endpoint', () => {
             expect(res.body.data._id).toBeDefined();
             // delete the created reservation
             try {
-              const service = new RestaurantService();
+              const service = new ReservationService();
               service.deleteReservation(res.body.data._id);
+              done();
             } catch (e) {
               throw new Error('Unable to delete the created reservation');
             }
-            done();
           });
     });
 

@@ -4,7 +4,7 @@ import {check, validationResult} from 'express-validator';
 import Reservation from '../../commonlib/models/reservation.js';
 import Restaurant from '../../commonlib/models/restaurant.js';
 
-import RestaurantService from '../services/restaurant.js';
+import ReservationService from '../services/reservation.js';
 import {APIResponse} from '../../commonlib/lib/APIResponse.js';
 import {
   paramMongoId,
@@ -41,7 +41,7 @@ export default (appRouter) => {
         Restaurant.findById(data.restaurantId, 'workingHours tables')
             .then((restaurant) => {
               const reservation = new Reservation(data);
-              const service = new RestaurantService(restaurant);
+              const service = new ReservationService(restaurant);
 
               service.createReservation(reservation)
                   .then((result) => {
@@ -77,7 +77,7 @@ export default (appRouter) => {
         Restaurant.findById(data.restaurantId, 'workingHours tables')
             .then((restaurant) => {
               const reservation = new Reservation(data);
-              const service = new RestaurantService(restaurant);
+              const service = new ReservationService(restaurant);
 
               service.updateReservation(reservation)
                   .then((result) => {
@@ -100,7 +100,7 @@ export default (appRouter) => {
         }
 
         const id = req.body._id;
-        const service = new RestaurantService();
+        const service = new ReservationService();
         service.deleteReservation(id)
             .then((result) => {
               if (!result) {
