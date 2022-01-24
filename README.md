@@ -31,53 +31,60 @@ This repository contains an API source code that build with NodeJS, ExpressJS, M
 ├── package.json
 ├── src
 │   ├── booking_manager
-│   │   ├── config
-│   │   │   ├── index.js
-│   │   │   └── logger.js
 │   │   ├── index.js
 │   │   ├── init
-│   │   │   ├── database.js
 │   │   │   ├── express.js
 │   │   │   └── index.js
-│   │   ├── lib
-│   │   │   ├── APIError.js
-│   │   │   └── APIResponse.js
-│   │   ├── middleware
-│   │   │   └── sanitizer.js
-│   │   ├── models
-│   │   │   ├── reservation.js
-│   │   │   └── restaurant.js
 │   │   ├── routes
 │   │   │   ├── index.js
 │   │   │   ├── reservation.js
 │   │   │   ├── restaurant.js
 │   │   │   └── settings.js
 │   │   └── services
+│   │       ├── reservation.js
+│   │       ├── reservation.test.js
 │   │       ├── restaurant.js
 │   │       └── restaurant.test.js
+│   ├── commonlib
+│   │   ├── config
+│   │   │   ├── index.js
+│   │   │   └── logger.js
+│   │   ├── init
+│   │   │   └── database.js
+│   │   ├── lib
+│   │   │   ├── APIError.js
+│   │   │   └── APIResponse.js
+│   │   ├── models
+│   │   │   ├── reservation.js
+│   │   │   └── restaurant.js
+│   │   └── validators
+│   │       └── sanitizer.js
 │   └── restaurant_booking
-│       ├── config
-│       │   ├── index.js
-│       │   └── logger.js
 │       ├── index.js
 │       ├── init
-│       │   ├── database.js
 │       │   ├── express.js
 │       │   └── index.js
-│       └── routes
-│           └── index.js
+│       ├── routes
+│       │   ├── index.js
+│       │   └── restaurant.js
+│       └── services
+│           └── reservation.js
 └── tests
-    ├── index.js
-    ├── integration
+    ├── booking_manager
     │   ├── reservation.test.js
     │   ├── restaurant.test.js
     │   └── settings.test.js
-    └── jest.setup.js
+    ├── index.js
+    ├── jest.setup.js
+    └── restaurant_booking
 ```
 As we see there are mandatory files like Dockerfile, package.json, docker-compose.yml etc.. 
 - `db/mongodb` folder is the folder that is going to be mounted to the MongoDB docker container.
 - `init-database-scripts` contains files like creating credentials for database, initializing schema validations and filling the DB with some fixtures that we are going to use during the integration test.
 - `logs` folder is the place where we put our application error and debug logs.
+- `src` folder is the place we store our microservice source code including unit tests. Currently we have 2 microsevices, called `booking_manager` and `restaurant_booking`.
+- There is new folder called `commonlib`, I've moved only shared consistent files into this new folder to provide better DRY result. Only Mongoose schemas, common service initializers, configurations and Error/Response classes should live in this folder.
+- There will be still duplicated service code, but to stay into DDD, we are accepting this a few duplicated lines. We should NOT move any business logic related lines into this `commonlib` folder.
 - `src` folder is the place we store our microservice source code including unit tests. Currently we have 2 microsevices, called `booking_manager` and `restaurant_booking`.
 - `tests` folder is the place where we put our integration tests, unit tests are living together with the main source files.
 
