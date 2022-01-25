@@ -4,10 +4,12 @@
 This repository contains an API source code that build with NodeJS, ExpressJS, MongoDB, including integration and unit tests. The application running on Docker containers and ready to deploy any cloud provider.
 
 ## Unit test Results:
-<img width="431" alt="Screen Shot 2022-01-18 at 22 55 46" src="https://user-images.githubusercontent.com/196202/150009137-5832880b-6481-4e8e-9f1b-128e322a8e1d.png">
+<img width="430" alt="Screen Shot 2022-01-25 at 07 24 51" src="https://user-images.githubusercontent.com/196202/150910685-beec2edb-a81d-46e4-a592-553c9b134158.png">
+
 
 ## Integration Test Results:
-<img width="432" alt="Screen Shot 2022-01-17 at 16 45 18" src="https://user-images.githubusercontent.com/196202/149780039-e41312c3-587c-4f45-83de-21e5c891cc42.png">
+<img width="465" alt="Screen Shot 2022-01-25 at 07 24 08" src="https://user-images.githubusercontent.com/196202/150910657-3c2518de-e46f-49c9-ab39-e0bb1025516e.png">
+
 
 ### Directory Structure:
 
@@ -164,47 +166,6 @@ $ docker-compose run booking_manager npm test -- --group=unit
 The command below executes integration tests.  
 ```bash
 $ docker-compose run booking_manager npm test -- --group=integration
-```
-
-#### Example Output:  
-```bash
- PASS  tests/integration/restaurant.test.js (16.82 s)
-  Restaurant
-    ✓ GET main page (141 ms)
-    ✓ GET restaurant details (201 ms)
-    ✓ 500 Error on wrong restaurant ID (45 ms)
-    ✓ 500 Error on invalid string (83 ms)
-
- PASS  tests/integration/settings.test.js (16.965 s)
-  Restaurant Settings
-    Working Hours
-      ✓ Should update working hours of a restaurant (521 ms)
-      ✓ Should return error 400 when invalid data posted (28 ms)
-      ✓ Should return error 400 when string posted (15 ms)
-    Tables
-      ✓ Should add a table (43 ms)
-      ✓ 400 Error when invalid data posted (22 ms)
-      ✓ Should update a table (40 ms)
-      ✓ Should be 400 response when invalid data putted (11 ms)
-
- PASS  tests/integration/reservation.test.js (19.183 s)
-  Reservation Endpoint
-    Create Reservation
-      ✓ Should create a new reservation (193 ms)
-      ✓ Should NOT allow past dates (20 ms)
-      ✓ Should NOT allow future dates more than 1 year (16 ms)
-      ✓ Should NOT allow reservations on the off day (18 ms)
-      ✓ Should NOT allow reservations out of working hours (16 ms)
-      ✓ Should NOT create reservation when invalid data posted (24 ms)
-    Edit Reservation
-      ✓ Should edit an existing reservation (33 ms)
-      ✓ Should be 400 Error when invalid data putted (26 ms)
-
-Test Suites: 3 passed, 3 total
-Tests:       19 passed, 19 total
-Snapshots:   0 total
-Time:        20.922 s
-Ran all test suites.
 ```
 
 # Endpoints
