@@ -93,7 +93,7 @@ After latest updates, now our repository support multiple microservice that usin
 
 I also created another docker file for our new microservice and make necessary changes in docker-compose and `dotenv-example` files as well.
 
-To see the second microservice you need to visit [http://localhost:3000](http://localhost:3000) It's just example empty microservice contains only express/database/config initialization. 
+To see the second microservice you need to visit [http://localhost:3001](http://localhost:3001) It's just example empty microservice contains only express/database/config initialization. 
 
 ## Start the application
 First step is to install Docker to your computer.
@@ -121,7 +121,7 @@ Please execute `tail -f logs/debug*.log` to see debug logs of all the microservi
 [2022-01-20T05:11:32.972] [INFO] default - √ MongoDB ready
 [2022-01-20T05:11:32.975] [INFO] default - Booking Manager Services up & ready!
 [2022-01-20T05:11:32.978] [INFO] default -
-      === Booking manager server is ready on port 8080 ===
+      === Booking manager server is ready on port 3000 ===
 
 
 ==> logs/debug.restaurant_booking.log <==
@@ -131,7 +131,7 @@ Please execute `tail -f logs/debug*.log` to see debug logs of all the microservi
 [2022-01-20T05:11:33.292] [INFO] default - √ MongoDB ready
 [2022-01-20T05:11:33.293] [INFO] default - Restaurant Booking Services up & ready!
 [2022-01-20T05:11:33.295] [INFO] default -
-      === Restaurant Booking server is ready on port 3000 ===
+      === Restaurant Booking server is ready on port 3001 ===
 ```
 
 
@@ -140,7 +140,7 @@ Keep an eye on these log files during development and test can be helpful.
 The application structure is similar to \*NIX systems. The services above started by the files under src/init folder. 
 Each file is a service and initilazing before we open the HTTP Server.  
 
-Please visit [http://localhost:8080/](http://localhost:8080/) to see if your API up and running.  
+Please visit [http://localhost:3000/](http://localhost:3000/) to see if your API up and running.  
 
 ## Restart the application
 We are using external docker volume to share the database with multiple containers.
@@ -207,11 +207,9 @@ Time:        20.922 s
 Ran all test suites.
 ```
 
-
-## Endpoints
-
+# Endpoints
 We have standard responses for any kind of request:  
-#### OK Response:
+### Example OK Response:
 ```json
 {
   "data": {...}
@@ -235,12 +233,29 @@ We have standard responses for any kind of request:
 ```
 In integration tests, we are checking the data property and errors array.  
 
-### Restaurant:
-GET [http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4](http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4)
+# Restaurant Booking Endpoints (Running on port 3001):
+To get tables and availability of the tables, GET request to  [http://localhost:3001/api/restaurant/61d4b04efafc4eb99190c7c4/2022-02-05](http://localhost:3001/api/restaurant/61d4b04efafc4eb99190c7c4/2022-02-05)  
+
+Please change the date at the and of the URL. To see different results, please test:
+- a week day in next 10 days
+- a sunday date in next 10 days
+- a week day in next 30+ days
+- an invalid date, like `2022-14-34`
+#### Request
+```bash
+curl -H 'Content-Type: application/json' -X GET http://localhost:3001/api/restaurant/61d4b04efafc4eb99190c7c4/2022-02-05
+```
 
 
-### Settings:
-To change working hours PUT to [http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/settings/working-hours](http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/settings/working-hours)
+# Booking Manager Endpoints (Running on port 3000)
+## Restaurant:
+To get restaurant details, GET [http://localhost:3000/api/restaurant/61d4b04efafc4eb99190c7c4](http://localhost:3000/api/restaurant/61d4b04efafc4eb99190c7c4)
+```bash
+curl -H 'Content-Type: application/json' -X GET http://localhost:3000/api/restaurant/61d4b04efafc4eb99190c7c4
+```
+
+## Settings:
+To change working hours PUT to [http://localhost:3000/api/restaurant/61d4b04efafc4eb99190c7c4/settings/working-hours](http://localhost:3000/api/restaurant/61d4b04efafc4eb99190c7c4/settings/working-hours)
 
 Use the curl command below to set the working hours of the restaurant.  
 `hour` is the opening hour  
@@ -259,11 +274,11 @@ curl -H 'Content-Type: application/json' -X PUT -d '
   { "hour":9, "day":5, "duration":720, "open":true },
   { "hour":11, "day":6, "duration":600, "open":true },
   { "hour":11, "day":0, "duration":600, "open":false }
-]' http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/settings/working-hours
+]' http://localhost:3000/api/restaurant/61d4b04efafc4eb99190c7c4/settings/working-hours
 ```
 
 
-To add a new table POST to [http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/settings/tables](http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/settings/tables)
+To add a new table POST to [http://localhost:3000/api/restaurant/61d4b04efafc4eb99190c7c4/settings/tables](http://localhost:3000/api/restaurant/61d4b04efafc4eb99190c7c4/settings/tables)
 
 #### Request:
 `name` is the table name, should be unique across the restaurant  
@@ -279,11 +294,11 @@ curl -H 'Content-Type: application/json' -X POST -d '
    "outdoor": true,
    "seat": 2,
    "floor": 2
-}' http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/settings/tables
+}' http://localhost:3000/api/restaurant/61d4b04efafc4eb99190c7c4/settings/tables
 ```
 
 
-To update a table PUT request to [http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/settings/tables](http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/settings/tables)
+To update a table PUT request to [http://localhost:3000/api/restaurant/61d4b04efafc4eb99190c7c4/settings/tables](http://localhost:3000/api/restaurant/61d4b04efafc4eb99190c7c4/settings/tables)
 
 #### Request:
 `_id` string  
@@ -297,12 +312,12 @@ curl -H 'Content-Type: application/json' -X PUT -d '
    "outdoor": true,
    "seat": 4,
    "floor": 2
-}' http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/settings/tables
+}' http://localhost:3000/api/restaurant/61d4b04efafc4eb99190c7c4/settings/tables
 ```
 
 
-### Reservation:
-To create a new reservation POST to [http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/reservation](http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/reservation)
+## Reservation:
+To create a new reservation POST to [http://localhost:3000/api/restaurant/61d4b04efafc4eb99190c7c4/reservation](http://localhost:3000/api/restaurant/61d4b04efafc4eb99190c7c4/reservation)
 
 #### Request:
 `name` string, a customer name,  
@@ -318,11 +333,11 @@ curl -H 'Content-Type: application/json' -X POST -d '
    "time":"2022-05-18T13:00:00.000Z",
    "people": 3,
    "tableId": "61dfb791e0205efb80f083ee"
-}' http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/reservation
+}' http://localhost:3000/api/restaurant/61d4b04efafc4eb99190c7c4/reservation
 ```
 
 #### Request: 
-To update a reservation PUT request to [http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/reservation](http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/reservation)
+To update a reservation PUT request to [http://localhost:3000/api/restaurant/61d4b04efafc4eb99190c7c4/reservation](http://localhost:3000/api/restaurant/61d4b04efafc4eb99190c7c4/reservation)
 
 `_id`, string, the id of the reservation to apply changes  
 
@@ -335,5 +350,5 @@ curl -H 'Content-Type: application/json' -X PUT -d '
    "time":"2022-06-18T13:00:00.000Z",
    "people": 5,
    "tableId": "61dfb791e0205efb80f083ee"
-}' http://localhost:8080/api/restaurant/61d4b04efafc4eb99190c7c4/reservation
+}' http://localhost:3000/api/restaurant/61d4b04efafc4eb99190c7c4/reservation
 ```

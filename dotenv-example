@@ -11,13 +11,13 @@ DB_PORT=27017
 
 # booking manager specific
 BOOKING_MANAGER_APP_NAME=booking_manager
-BOOKING_MANAGER_PORT=8080
+BOOKING_MANAGER_PORT=3000
 BOOKING_MANAGER_ROOT_DIR=/apis/booking_manager
 BOOKING_MANAGER_LOG_PATH=/apis/booking_manager/logs/
 
 # restaurant booking sepcific
 RESTAURANT_BOOKING_APP_NAME=restaurant_booking
-RESTAURANT_BOOKING_PORT=3000
+RESTAURANT_BOOKING_PORT=3001
 RESTAURANT_BOOKING_ROOT_DIR=/apis/restaurant_booking
 RESTAURANT_BOOKING_LOG_PATH=/apis/restaurant_booking/logs/
 

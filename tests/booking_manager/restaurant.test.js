@@ -1,11 +1,11 @@
 /**
  * Test reservation API
  *
- * @group integration
+ * @group integration/booking_manager
  */
 
 import request from 'supertest';
-import API from '../index.js';
+import API from './index.js';
 
 describe('Restaurant', () => {
   test('GET main page', (done) => {

@@ -1,4 +1,5 @@
 import {Router} from 'express';
+import restaurant from './restaurant.js';
 
 /**
  * @return {Router}
@@ -6,7 +7,7 @@ import {Router} from 'express';
 export default function routes() {
   const appRouter = new Router();
 
-  // API specific routes will be here
+  restaurant(appRouter);
 
   return appRouter;
 }

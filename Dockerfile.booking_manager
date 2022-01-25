@@ -3,5 +3,5 @@ USER node
 WORKDIR /apis/booking_manager
 COPY --chown=node:node . .
 RUN npm install
-EXPOSE 8080
+EXPOSE 3000
 CMD ["node", "src/booking_manager/index.js"]

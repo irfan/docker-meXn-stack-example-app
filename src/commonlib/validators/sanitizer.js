@@ -81,3 +81,24 @@ export function allowArrayOnly(propList, options) {
     return true;
   });
 }
+
+
+/**
+ * @param {string} str the object id location
+ * @return {Date}
+ */
+export function paramDate(str) {
+  return param(str).custom((dateParam) => {
+    if (!Date.parse(dateParam)) {
+      throw new Error(`Invalid date parameter, valid format YYYY-MM-DD`);
+    }
+    const date = new Date(dateParam);
+    const max = new Date();
+    const min = new Date();
+    max.setFullYear(max.getFullYear() + 1);
+    if (date < min || date > max) {
+      throw new Error(`You can create reservation only for next 12 months`);
+    }
+    return date;
+  });
+}

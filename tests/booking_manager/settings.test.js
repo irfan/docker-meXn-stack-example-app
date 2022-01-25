@@ -1,11 +1,12 @@
 /**
  * Test reservation API
  *
- * @group integration
+ * @group integration/booking_manager
  */
 import request from 'supertest';
-import API from '../index.js';
-import RestaurantService from '../../src/booking_manager/services/restaurant.js';
+import API from './index.js';
+import RestaurantService
+  from '../../src/booking_manager/services/restaurant.js';
 
 describe('Restaurant Settings', () => {
   // test working hours endpoints
